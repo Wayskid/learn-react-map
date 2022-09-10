@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import ShoeCard from './ShoeCard'
+import ShoeData from "./DataList"
+import { useState } from 'react'
 
-function App() {
+
+export default function App() {
+
+  const [ shoesUse, setShoes ] = useState(ShoeData)
+
+  function toggle(id) {
+     setShoes(prevShoes=>{
+      return prevShoes.map(el=>{
+        return el.id === id ? {...el, on: !el.on} : el
+      })
+     })
+  }
+  
+
+  const shoes = shoesUse.map(shoe => {
+
+    const style = shoe.on ? "scale" : "noScale";
+
+    return (
+        <ShoeCard 
+          key= {shoe.id}
+          image= {shoe.image}
+          name= {shoe.name}
+          size= {shoe.size}
+          price= {shoe.price}
+          scaleClass={style}
+          handleClick= {()=>{toggle(shoe.id)}}
+        />
+    );
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='containerBody'>
+      {shoes}
     </div>
-  );
+  ) 
 }
 
-export default App;
+
